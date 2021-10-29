@@ -4,23 +4,91 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake</title>
+    <title>SnakePit</title>
     <style>
         h1 {
             font-size: 3em;
-            color: lightgreen;
+            color: #20ff20;
         }
+
+        h1 #pit {
+            color: black;
+            overflow: none;
+        }
+
+        h1 #p {
+            position: relative;
+            top: 19px;
+        }
+
+        /* h1 #p:before {
+            content: "\""
+        } */
     </style>
 </head>
 <body>
-<h1>Snake</h1>
- <canvas id="canvas" width="300" height="300">
-</canvas>
+<h1>Snake<span id="pit"><span id="p">P</span>it</span></h1>
+ <canvas id="canvas" width="450" height="300">
+</canvas><br>
+<input type="button" onclick="draw()" value="Draw"/> <br/>
+<input type="button" onclick="remove()" value="Clear"/> <br/>
 <script>
     var canvas = document.getElementById("canvas")
-    alert('hallo, de pappa van jasper is een idioote briljante lieverik!')
-    var cooleTekst = 'het script is nu lekker bezig met variabelen!'
-    alert(cooleTekst)
+    var ctx = canvas.getContext('2d')
+
+    // var luckyCatClub = ["Ruby", "Markus"]
+
+    // luckyCatClub.forEach(function sayname(name) {
+    //     alert(name)
+    // })
+
+    var board =[
+      "###############",
+      "#             #",
+      "#        o    #",
+      "#             #",
+      "#    ####     #",   
+      "#    ####     #",  
+      "#             #",
+      "#        o    #",
+      "#             #",
+      "###############",
+      ]
+
+    ctx.fillCircle = function(x, y, width, height) {
+        // Bron: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/arc
+        ctx.beginPath();
+        ctx.arc(x + 0.5*width, y+0.5*height, width/2, height/2, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+      
+    var squaresize = 30
+    var currentYOffset = 0
+    board.forEach(function checkLine(line) {
+        line = line.split("")
+        var currentXOffset = 0
+        line.forEach(function checkCharacter(character) {
+            if (character === "#") {
+                ctx.fillStyle = "purple"
+                ctx.fillRect(currentXOffset, currentYOffset, squaresize, squaresize)
+            }
+            if (character === "o") {
+                ctx.fillStyle = "black"
+                ctx.fillCircle(currentXOffset, currentYOffset, squaresize, squaresize)
+            }
+            currentXOffset += squaresize
+        })
+        currentYOffset += squaresize
+    })  
+
+    function draw() {
+        ctx.fillStyle = "green"
+        ctx.fillCircle(0, 0, 30, 30)
+    }
+
+    function remove() {
+        ctx.clearRect(0, 0, 30, 30)
+    }
 </script>
 </body>
 </html>
